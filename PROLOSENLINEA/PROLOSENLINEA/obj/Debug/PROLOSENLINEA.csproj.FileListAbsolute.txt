@@ -99,3 +99,7 @@ C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\bin\es\Microsoft.O
 C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\obj\Debug\PROLOSENLINEA.csprojResolveAssemblyReference.cache
 C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\obj\Debug\PROLOSENLINEA.dll
 C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\obj\Debug\PROLOSENLINEA.pdb
+C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\bin\Google.Protobuf.dll
+C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\bin\MySql.Data.dll
+C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\bin\Google.Protobuf.xml
+C:\Users\acer\Source\Repos\Prolos\PROLOSENLINEA\PROLOSENLINEA\bin\MySql.Data.xml
