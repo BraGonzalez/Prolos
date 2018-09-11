@@ -7,10 +7,12 @@ using PROLOSENLINEA.Models;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 
+
 namespace PROLOSENLINEA.Controllers
 {
     public class UsuarioController : Controller
     {
+        // GET: Usuario
         [HttpGet]
         public ActionResult Index()
         {
@@ -38,7 +40,7 @@ namespace PROLOSENLINEA.Controllers
                                     nombre = sdr["nombre"].ToString(),
                                     apellido = sdr["apellido"].ToString(),
                                     correo = sdr["correo"].ToString(),
-                                    tipo = sdr["tipo"].ToString(),
+                                    //tipo = sdr["tipo"].ToString(),
                                     contraseña = sdr["contraseña"].ToString()
 
                                 });
@@ -60,43 +62,107 @@ namespace PROLOSENLINEA.Controllers
 
 
         [HttpPost]
-        public ActionResult Index(UsuarioModel Model)
+        public ActionResult Index(Guardar Model, elmentinput boton, EditarUsuario Edita, EliminaUsuario Elimina)
+
         {
-            UsuarioModel mo = new UsuarioModel();
-            mo = Model;
-            try
+            if (boton.btn == "Guardar")
             {
-
-                string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
+                try
                 {
-                    Response.Write(mo.id_Usuario);
-                    string query = "INSERT INTO prolos.tb_usuario(id_usuario,nombre,apellido,correo,tipo,contraseña) VALUES ('" + mo.id_Usuario + "','" + mo.nombre + "','" + mo.apellido + "','" + mo.correo + "','" + mo.tipo + "','" + mo.contraseña + "');";
-
+                    Model.tipo = "Cliente";
+                    string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+                    using (MySqlConnection con = new MySqlConnection(constr))
                     {
-                        MySqlConnection MyConn = new MySqlConnection(constr);
-                        MySqlCommand MyComand = new MySqlCommand(query, MyConn);
-                        MySqlDataReader myReader;
-                        MyConn.Open();
-                        myReader = MyComand.ExecuteReader();
+                        Response.Write(Model.id_Usuario);
+                        string query = "INSERT INTO prolos.tb_usuario(id_usuario,nombre,apellido,correo,tipo,contraseña) VALUES ('" + Model.id_Usuario + "','" + Model.nombre + "','" + Model.apellido + "','" + Model.correo + "','" + Model.tipo + "','" + Model.contraseña + "');";
 
-                        while (myReader.Read())
                         {
+                            MySqlConnection MyConn = new MySqlConnection(constr);
+                            MySqlCommand MyComand = new MySqlCommand(query, MyConn);
+                            MySqlDataReader myReader;
+                            MyConn.Open();
+                            myReader = MyComand.ExecuteReader();
+
+                            while (myReader.Read())
+                            {
+                            }
+                            MyConn.Close();
                         }
-                        MyConn.Close();
                     }
 
-                    return RedirectToAction("Index", "Usuario");
+                    return Json(new { success = true });
+                }
+                catch (Exception)
+                {
+                    return Json(new { success = false });
+                }
+
+
+            }
+            else if (boton.btn == "Editar")
+            {
+                try
+                {
+                    string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+                    using (MySqlConnection con = new MySqlConnection(constr))
+                    {
+
+                        string query1 = "UPDATE prolos.tb_usuario SET nombre = '" + Edita.nomb + "', apellido = '" + Edita.ape + "', correo = '" + Edita.cor + "', contraseña = '" + Edita.cont + "' where id_usuario = '" + Edita.id_user + "';";
+
+                        {
+                            MySqlConnection MyConn = new MySqlConnection(constr);
+                            MySqlCommand MyComand = new MySqlCommand(query1, MyConn);
+                            MySqlDataReader myReader;
+                            MyConn.Open();
+                            myReader = MyComand.ExecuteReader();
+
+                            while (myReader.Read())
+                            {
+                            }
+                            MyConn.Close();
+                        }
+                    }
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
                 }
 
             }
-            catch (Exception)
+            else if (boton.btn == "Eliminar")
             {
-                throw;
+                //eliminar
+                try
+                {
+
+                    string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+                    using (MySqlConnection con = new MySqlConnection(constr))
+                    {
+                        Response.Write(Elimina.id_usu);
+                        string query2 = "delete from prolos.tb_usuario where id_usuario= '" + Elimina.id_usu + "';";
+
+                        {
+                            MySqlConnection MyConn = new MySqlConnection(constr);
+                            MySqlCommand MyComand = new MySqlCommand(query2, MyConn);
+                            MySqlDataReader myReader;
+                            MyConn.Open();
+                            myReader = MyComand.ExecuteReader();
+
+                            while (myReader.Read())
+                            {
+                            }
+                            MyConn.Close();
+                        }
+                    }
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
             }
-
+            return RedirectToAction("Usuario", "Index");
         }
-
-
     }
 }

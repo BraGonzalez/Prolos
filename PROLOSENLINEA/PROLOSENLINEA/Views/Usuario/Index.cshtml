@@ -2,17 +2,20 @@
 @using System.Collections;
 @model IEnumerable<UsuarioModel>
 
+
 <LINK REL=StyleSheet HREF="~/Content/bootstrap.min.css" TYPE="css">
 <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
 @{
     ViewBag.Title = "Usuarios del Sistema";
 }
+
 <h2 style="text-align:center">Usuarios del Sistema</h2>
+
 <p>
     <a href="#" class="btn btn-default" title="Nuevo Usuario" data-toggle="modal" data-target="#exampleModalCenter">Nuevo Usuario</a>
 </p>
 
-<div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -24,38 +27,123 @@
             <div class="modal-body">
 
                 <form class="form-horizontal" method="post" id="guardar_usuario" name="guardar">
-                    <div class="form-group">
-                        <label for="id_usuario">Cédula:</label>
-                        <input class="form-control" name="id_usuario" type="text" id="id_usuario" placeholder="# #### ####" />
+                    <div id="resultados_ajax"></div>
+
+                    <div id="error" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
+                        <strong>Error el usuario ya existe!</strong>
+                        <h4></h4>
                     </div>
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input class="form-control" name="nombre" type="text" id="nombre" placeholder="Nombre" />
-                    </div>
-                    <div class="form-group">
-                        <label for="apellido">Apellido:</label>
-                        <input class="form-control" name="apellido" type="text" id="apellido" placeholder="Apellido" />
-                    </div>
-                    <div class="form-group">
-                        <label for="correo">E-mail:</label>
-                        <input class="form-control" name="correo" type="email" id="correo" placeholder="ejemplo@correo.es" />
-                    </div>
-                    <div class="form-group">
-                            <label for="tipo">Perfil:</label>
-                            <select class="form-control" name="tipo">
-                                <option value="Administrador">Administrador</option>
-                                <option value="Cliente">Cliente</option>
-                            </select>
-                        </div>
-                    <div class="form-group">
-                        <label for="contraseña">Contraseña:</label>
-                        <input class="form-control" name="contraseña" type="password" id="contraseña" placeholder="Contraseña" />
-                    </div>
+                    <label for="id_usuario">Cédula:</label>
+                    <input type="hidden" class="form-control" id="btn" name="btn" value="Guardar" />
+                    <input class="form-control" name="id_usuario" type="text" id="id_usuario" placeholder="# #### ####" />
+
+
+                    <label for="nombre">Nombre:</label>
+                    <input class="form-control" name="nombre" type="text" id="nombre" placeholder="Nombre" />
+
+
+                    <label for="apellido">Apellido:</label>
+                    <input class="form-control" name="apellido" type="text" id="apellido" placeholder="Apellido" />
+
+                    <label for="correo">E-mail:</label>
+                    <input class="form-control" name="correo" type="email" id="correo" placeholder="ejemplo@correo.es" />
+
+
+                    <label for="contraseña">Contraseña:</label>
+                    <input class="form-control" name="contraseña" type="password" id="contraseña" placeholder="Contraseña" />
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button value="" name="guardar" type="submit" class="btn btn-primary">Registrar</button>
+                        <button id="cierra" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="btnGuardar" name="btnGuardar" type="submit" class="btn btn-primary">Registrar</button>
                     </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="text-align:center">Modificar Datos de Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" method="post" id="editar" name="editar">
+                    <div id="resultados_ajax"></div>
+                    <div id="error" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
+                        <strong>Error el usuario ya existe!</strong>
+                        <h4></h4>
+                    </div>
+
+                    <label for="id_usuario">Cédula:</label>
+                    <input type="hidden" class="form-control" id="btn" name="btn" value="Editar" />
+                    <input class="form-control" name="id_user" type="text" id="id_user" />
+
+                    <label for="nombre">Nombre:</label>
+                    <input value="" class="form-control" name="nomb" type="text" id="nomb" />
+
+                    <label for="apellido">Apellido:</label>
+                    <input value="" class="form-control" name="ape" type="text" id="ape" />
+
+                    <label for="correo">E-mail:</label>
+                    <input class="form-control" name="cor" type="email" id="cor" />
+
+
+                    <label for="contraseña">Contraseña:</label>
+                    <input class="form-control" name="cont" type="password" id="cont" />
+
+                    <div class="modal-footer">
+                        <button id="cierra" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="btnEditar" name="btnEditar" type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_borrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="text-align:center">Eliminar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" method="post" id="borrar" name="borrar">
+                    <div id="resultados_ajax"></div>
+
+                    <label for="id_usuario">Cédula:</label>
+                    <input type="hidden" class="form-control" id="btn" name="btn" value="Eliminar" />
+                    <input class="form-control" name="id_usu" type="text" id="id_usu" />
+
+                    <label for="nombre">Nombre:</label>
+                    <input value="" class="form-control" name="nom" type="text" id="nom" />
+
+                    <label for="apellido">Apellido:</label>
+                    <input value="" class="form-control" name="apel" type="text" id="apel" />
+
+                    <label for="correo">E-mail:</label>
+                    <input class="form-control" name="corr" type="email" id="corr" />
+
+                    <label for="contraseña">Contraseña:</label>
+                    <input class="form-control" name="contra" type="password" id="contra" />
+
+                    <div class="modal-footer">
+                        <button id="cierra" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="btnEliminar" name="btnEliminar" type="submit" class="btn btn-primary">Borrar</button>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -67,29 +155,31 @@
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Email</th>
-        <th>Tipo</th>
         <th>Contraseña</th>
     </tr>
 
     @foreach (UsuarioModel usuario in Model)
-
     {
         <tr>
             <td>@usuario.id_Usuario</td>
             <td>@usuario.nombre</td>
             <td>@usuario.apellido</td>
             <td>@usuario.correo</td>
-            <td>@usuario.tipo</td>
             <td>@usuario.contraseña</td>
-            @*<td>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                        Editar
-                    </button>
-                    @Html.ActionLink("Editar", "Edit", new { id = usuario.id_Usuario }) |
-                    @Html.ActionLink("Detalles", "Details", new { id = usuario.id_Usuario }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id = usuario.id_Usuario })
-                </td>*@
+
+            @* Obtiene los datos del usuario y los envia a la funcion *@
+            <td>
+                <button id="Edit" type='button' class="btn btn-secondary" title='Editar usuario' onclick="obtener_datos('@usuario.id_Usuario','@usuario.nombre','@usuario.apellido','@usuario.correo','@usuario.contraseña');" data-toggle="modal" data-target="#modal_editar">
+                    Editar<i class="fa fa-cog"></i>
+                </button>
+            </td>
+            <td>
+                <button id="Elimina" type='button' class="btn btn-secondary" title='Eliminar usuario' onclick="borrar_datos('@usuario.id_Usuario','@usuario.nombre','@usuario.apellido','@usuario.correo','@usuario.contraseña');" data-toggle="modal" data-target="#modal_borrar">
+                    Borrar<i class="fa fa-cog"></i>
+                </button>
+            </td>
         </tr>
+
     }
 </table>
 @section Scripts {

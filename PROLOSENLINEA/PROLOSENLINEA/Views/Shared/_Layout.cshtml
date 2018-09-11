@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
@@ -38,8 +38,123 @@
         </footer>
     </div>
 
+
+
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+    //guardar
+    $("#guardar_usuario").submit(function (event) { //id del formulario
+        $('#btnGuardar').attr("disabled", false);  //id del botón
+
+    var parametros = $(this).serialize();
+    $.ajax({
+    type: "POST",
+    url: "/Usuario/Index",  //vinculo al controlador
+    data: parametros,
+    beforeSend: function (objeto) {
+        $("#resultados_ajax").html();
+    },
+    success: function (datos) {
+     alert(datos);
+    if (datos.success)
+    {
+        alert("Entró");
+        location.href = '@Url.Action("Index", "Usuario")';
+
+    }
+    else
+    {
+        alert(Errror);
+    $('#error').css('display', 'block');
+    $("#resultados_ajax").html(datos);
+    $('#btnGuardar').attr("disabled", false);
+    }
+    }
+    });
+    event.preventDefault();
+    })
+
+    //editar
+    $("#editar").submit(function (event) { //id del formulario
+        $('#btnEditar').attr("disabled", false);  //id del botón
+
+        var parametros = $(this).serialize();
+        alert(parametros);
+        $.ajax({
+            type: "POST",
+            url: "/Usuario/Index",  //vinculo al controlador
+            data: parametros,
+            beforeSend: function (objeto) {
+                $("#resultados_ajax").html("Se ha producido un error, el usuario ya existe!");
+            },
+            success: function (datos) {
+                if (datos.success) {
+                    alert("Entra al sucess");
+                    location.href = '@Url.Action("Index", "Usuario")';
+                }
+                else {
+                    $('#error').css('display', 'block');
+                    $("#resultados_ajax").html(datos);
+                    $('#btnEditar').attr("disabled", false);
+                }
+            }
+        });
+        event.preventDefault();
+    })
+    //Borrar
+    $("#borrar").submit(function (event) { //id del formulario
+        $('#btnEliminar').attr("disabled", false);  //id del botón
+        var parametros = $(this).serialize();
+        alert(parametros);
+        $.ajax({
+            type: "POST",
+            url: "/Usuario/Index",  //vinculo al controlador
+            data: parametros,
+            beforeSend: function (objeto) {
+                $("#resultados_ajax").html("Se ha producido un error!");
+            },
+            success: function (datos) {
+                alert("entra al sucess");
+                if (datos.success) {
+                    location.href = '@Url.Action("Index", "Usuario")';
+                }
+                else {
+                    $('#error').css('display', 'block');
+                    $("#resultados_ajax").html(datos);
+                    $('#btnEliminar').attr("disabled", false);
+                }
+            }
+        });
+        event.preventDefault();
+    })
+    //limpia formulario del modal
+    $("#exampleModalCenter").on('hidden.bs.modal', function (e) {
+        $("#guardar_usuario")[0].reset();
+    })
+    //carga los datos del usuario en el formulario
+    function obtener_datos(id_user, nomb, ape, cor, contr) {
+        $("#id_user").val(id_user);
+        $("#nomb").val(nomb);
+        $("#ape").val(ape);
+        $("#cor").val(cor);
+        //$("#tipo").val(tipo);
+        $("#cont").val(contr);
+        //$('#id_user').attr("disabled", true);
+        alert(id_user);
+    }
+    function borrar_datos(id_Usu, nombre, apellido, correo, contraseña) {
+        $("#id_usu").val(id_Usu);
+        $("#nom").val(nombre);
+        $("#apel").val(apellido);
+        $("#corr").val(correo);
+        //$(".tip").val(tipo);
+        $("#contra").val(contraseña);
+        alert(id_Usu);
+    }
+
+</script>

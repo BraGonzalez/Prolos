@@ -49,6 +49,10 @@ namespace PROLOSENLINEA.Models
     public class LoginViewModel
     {
         [Required]
+        [Display(Name = "Nombre Usuario")]
+        public string Nombre { get; set; }
+
+        [Required]
         [Display(Name = "Correo electrónico")]
         [EmailAddress]
         public string Email { get; set; }
@@ -64,6 +68,10 @@ namespace PROLOSENLINEA.Models
 
     public class RegisterViewModel
     {
+        [Required]       
+        [Display(Name = "Nombre Usuario")]
+        public string Nombre { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Correo electrónico")]
